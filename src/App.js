@@ -3,12 +3,13 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import List from './component/list/List';
 import Pagination from './component/pagination/Pagination';
+import Header from "./component/Header/Header";
 function App() {
   // declare state 
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(8);
+  const [postsPerPage] = useState(6);
 
   //fetching data using axios
 
@@ -16,7 +17,7 @@ function App() {
        setLoading(true);
        axios.get('https://intense-tor-76305.herokuapp.com/merchants').then((response)=>{
          let arr=[];
-         for(let i=0;i<5;i++)
+         for(let i=0;i<4;i++)
          {
            response.data.map((data)=>{
              arr.push(data);
@@ -39,6 +40,7 @@ function App() {
    const paginate = pageNumber => setCurrentPage(pageNumber);
   return (
     <>
+     <Header/>
      <List posts={currentPosts} loading={loading} />
      <Pagination
         postsPerPage={postsPerPage}
