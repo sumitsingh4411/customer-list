@@ -16,12 +16,10 @@ const useStyles = makeStyles({
   },
 });
 
-const List = ({ posts, loading }) => {
+const List = ({ posts, loading, arr,arrs }) => {
   const [max, setmax] = useState(true);
-  const [bid, setbids] = useState([]);
-  const [sbid, ssetbids] = useState(1000000);
-  const [mbid, msetbids] = useState(-1000000);
   const classes = useStyles();
+  const [id , setid]=useState(null);
   if (loading) {
     return <h2>Loading...</h2>;
   }
@@ -40,12 +38,12 @@ const List = ({ posts, loading }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {posts.map((row) => (
+          {posts.map((row, i) => (
             <TableRow key={row.id}>
               <TableCell component="th" scope="row">
                 <div style={{ display: 'flex' }}>
                   {row.firstname + "  " + row.lastname}
-                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <Avatar alt={row.firstname} src={row.avatarUrl} />
                 </div>
               </TableCell>
@@ -53,21 +51,13 @@ const List = ({ posts, loading }) => {
               <TableCell align="right">{row.phone}</TableCell>
               <TableCell align="right">{row.hasPremium === true ? "true" : "false"}</TableCell>
               <TableCell align="right">
-                <div style={{ display: 'flex' }} >
-                  {
-                    row.bids.map(e=>{
-                       if(e.amount>mbid)
-                         msetbids(e.amount);
-                       if(e.amout<sbid)
-                         ssetbids(e.amount);
-                          
-                    })
-                  }
+                <div style={{ display: 'flex', justifyContent:'flex-end' }} >
+                <BootstrapSwitchButton key={row.id} checked={true} onChange={()=>{setmax(!max); setid(row.id)}}>max</BootstrapSwitchButton>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   {
-                     mbid!==1000000 && sbid!==-1000000 &&  max===true  ? sbid : mbid
+                     (max===true && row.id===id) ? arr[i] : arrs[i]
                   }
-                  <BootstrapSwitchButton checked={true} onChane={()=>{setmax(false)}}>max</BootstrapSwitchButton>
+                  
                 </div>
               </TableCell>
             </TableRow>

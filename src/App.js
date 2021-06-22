@@ -4,27 +4,52 @@ import './App.css';
 import List from './component/list/List';
 import Pagination from './component/pagination/Pagination';
 import Header from "./component/Header/Header";
+import Sort from "./component/sort/Sort";
+
+let arr=[];
+let arrs=[];
 function App() {
   // declare state 
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(6);
-
   //fetching data using axios
 
   useEffect(() => {
        setLoading(true);
+       const find_max=(arr)=>{
+            let ans=-10000000;
+            arr.map(e=>{
+              if(e.amount>ans)
+              ans=e.amount;
+            })
+           return ans;
+       }
+       const find_min=(arr)=>{
+        let ans=10000000;
+        arr.map(e=>{
+          if(e.amount<ans)
+          ans=e.amount;
+        })
+       return ans;
+      }
        axios.get('https://intense-tor-76305.herokuapp.com/merchants').then((response)=>{
-         let arr=[];
-         for(let i=0;i<4;i++)
-         {
+        
            response.data.map((data)=>{
-             arr.push(data);
+              if(data.bids)
+              {
+              arr.push(find_max(data.bids));
+              arrs.push(find_min(data.bids));
+              }
+              else
+              {
+              arr.push(-1); 
+              arrs.push(-1); 
+              }  
+       
            })
-         }
-           setPosts(arr);
-           console.log(arr)
+           setPosts(response.data);
        }).catch((err)=>{
            console.log(err);
        })
@@ -41,7 +66,11 @@ function App() {
   return (
     <>
      <Header/>
-     <List posts={currentPosts} loading={loading} />
+     <Sort/>
+     <List posts={currentPosts} loading={loading} arr={arr} arrs={arrs}/>
+     <div style={{marginTop:'5vh'}}>
+
+     </div>
      <Pagination
         postsPerPage={postsPerPage}
         totalPosts={posts.length}
