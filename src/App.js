@@ -5,7 +5,7 @@ import List from './component/list/List';
 import Pagination from './component/pagination/Pagination';
 import Header from "./component/Header/Header";
 import Sort from "./component/sort/Sort";
-
+import { Route, Switch } from "react-router-dom";
 let arr=[];
 let arrs=[];
 function App() {
@@ -65,6 +65,8 @@ function App() {
    const paginate = pageNumber => setCurrentPage(pageNumber);
   return (
     <>
+    <switch>
+    <Route exac path="/">
      <Header/>
      <Sort/>
      <List posts={currentPosts} loading={loading} arr={arr} arrs={arrs}/>
@@ -76,6 +78,8 @@ function App() {
         totalPosts={posts.length}
         paginate={paginate}
       />
+    </Route> 
+    </switch> 
     </>
   );
 }
