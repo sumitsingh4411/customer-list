@@ -37,11 +37,15 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2, 4, 3),
   },
 }))
-const List = ({ posts, loading, arr, arrs }) => {
+
+const List = ({ posts, loading, arr, arrs, onToggle }) => {
   const [max, setmax] = useState(true);
   const classes = useStyles();
+  const [sort, setSort] = useState(1);
   const [id, setid] = useState(null);
+  const [toggledMap, setToggledMap] = useState(posts.reduce((acc, val) => ({ ...acc, [val.id]: false }), {}));
   const [open, setOpen] = React.useState(false);
+  const [toggled, setToggled] = React.useState(false);
   const [modalStyle] = React.useState(getModalStyle);
 
   const handleOpen = () => {
@@ -55,12 +59,13 @@ const List = ({ posts, loading, arr, arrs }) => {
     return <h2>Loading...</h2>;
   }
 
-
   return (
+
     <TableContainer component={Paper}>
+      <button  onClick={() => setSort(val => (-val))} style={{marginLeft:'97vw', marginTop:'1vh'}}>sort</button>
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
-          <TableRow onClick={handleOpen} style={{cursor:'pointer'}}>
+          <TableRow>
             <TableCell>Customer name</TableCell>
             <TableCell align="right"> Email</TableCell>
             <TableCell align="right"> Phone &nbsp;(g)</TableCell>
@@ -71,7 +76,7 @@ const List = ({ posts, loading, arr, arrs }) => {
         <TableBody>
           {posts.map((row, i) => (
             <TableRow key={row.id}>
-              <TableCell component="th" scope="row">
+              <TableCell component="th" scope="row" onClick={handleOpen} style={{ cursor: 'pointer' }}>
                 <div style={{ display: 'flex' }}>
                   {row.firstname + "  " + row.lastname}
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -83,12 +88,12 @@ const List = ({ posts, loading, arr, arrs }) => {
               <TableCell align="right">{row.hasPremium === true ? "true" : "false"}</TableCell>
               <TableCell align="right">
                 <div style={{ display: 'flex', justifyContent: 'flex-end' }} >
-                  <BootstrapSwitchButton key={row.id} checked={true} onChange={() => { setmax(!max); setid(row.id) }}>max</BootstrapSwitchButton>
+                  <BootstrapSwitchButton key={row.id} checked={toggledMap[row.id]} onChange={() => { setToggledMap((val) => ({ ...val, [row.id]: !val[row.id] })) }}>max</BootstrapSwitchButton>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   {
-                    (max === true && row.id === id) ? arr[i] : arrs[i]
+                    (toggledMap[row.id]) ? arr[i] : arrs[i]
                   }
-                  <Modal
+                  {/* <Modal
                     open={open}
                     onClose={handleClose}
                     aria-labelledby="simple-modal-title"
@@ -97,12 +102,12 @@ const List = ({ posts, loading, arr, arrs }) => {
                     <div style={modalStyle} className={classes.paper}>
                       <h2 id="simple-modal-title">{row.firstname + "  " + row.lastname}</h2>
                       <p id="simple-modal-description">
-                        {row.bids.map(e=>{
+                        {row.bids.map(e => {
                           <p>{e.amount}</p>
                         })}
                       </p>
-                  </div>
-                  </Modal>
+                    </div>
+                  </Modal> */}
                 </div>
               </TableCell>
             </TableRow>
