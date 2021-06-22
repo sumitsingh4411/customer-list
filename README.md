@@ -4,11 +4,11 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 #  how to run this in your local machine
 
-step 1: download this project in zip file.
-step 2: extract and open with any editor
-step 3: go to customer-list folder 
-step 4: run "npm install" your computer should have nodejs install
-step 5 : run "npm start" it will run in your local machine 
+step 1: download this project in zip file.\
+step 2: extract and open with any editor.\
+step 3: go to customer-list folder.\
+step 4: run "npm install" your computer should have nodejs install.\
+step 5 : run "npm start" it will run in your local machine.\
 
 
 
